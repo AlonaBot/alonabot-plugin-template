@@ -10,7 +10,7 @@ import (
 func TestCommands(t *testing.T) {
 	p := New()
 	h := plugintest.Start(t, plugintest.Plugin(p),
-		plugintest.Config(p, `{"greet":{"greeting":"Hi"},"dice":{"default_sides":2}}`))
+		plugintest.Config(p, `{"greet":{"greeting":"Hi"}}`))
 	user := plugintest.User{ID: "alice"}
 	chat := plugintest.Private(user.ID)
 
@@ -28,12 +28,5 @@ func TestCommands(t *testing.T) {
 	}
 	if got := reply("/hello"); got != "Hi, everyone!" {
 		t.Errorf("/hello = %q", got)
-	}
-	// 省略面数时使用配置的 default_sides，别名 dice 与 roll 相同。
-	if got := reply("/dice"); got != "You rolled 1 (1-2)." && got != "You rolled 2 (1-2)." {
-		t.Errorf("/dice = %q", got)
-	}
-	if got := reply("/roll 1"); got != "The number of sides must be between 2 and 100." {
-		t.Errorf("/roll 1 = %q", got)
 	}
 }

@@ -9,17 +9,5 @@
         "default": "Hello"
       }
     }
-  },
-  "dice": {
-    "type": "object",
-    "description": "Dice",
-    "items": {
-      "default_sides": {
-        "type": "int",
-        "description": "Default number of sides",
-        "default": 6,
-        "slider": {"min": 2, "max": 100}
-      }
-    }
   }
 }

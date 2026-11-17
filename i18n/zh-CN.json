@@ -6,17 +6,15 @@
   "config": {
     "greet": {
       "description": "问候",
-      "items": {"greeting": {"description": "名字前的问候语"}}
-    },
-    "dice": {
-      "description": "掷骰",
-      "items": {"default_sides": {"description": "默认面数"}}
+      "items": {
+        "greeting": {
+          "description": "名字前的问候语"
+        }
+      }
     }
   },
   "messages": {
     "greet.reply": "{greeting}，{name}！",
-    "greet.everyone": "大家",
-    "dice.reply": "掷出了 {value}（1～{sides}）。",
-    "dice.invalid": "面数要在 2 到 100 之间。"
+    "greet.everyone": "大家"
   }
 }
