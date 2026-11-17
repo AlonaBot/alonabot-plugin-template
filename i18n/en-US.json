@@ -4,9 +4,9 @@
     "description": "A starting point for AlonaBot plugins"
   },
   "messages": {
-    "hello.reply": "{greeting}, {name}!",
-    "hello.everyone": "everyone",
-    "roll.reply": "You rolled {value} (1-{sides}).",
-    "roll.invalid": "The number of sides must be between 2 and 100."
+    "greet.reply": "{greeting}, {name}!",
+    "greet.everyone": "everyone",
+    "dice.reply": "You rolled {value} (1-{sides}).",
+    "dice.invalid": "The number of sides must be between 2 and 100."
   }
 }

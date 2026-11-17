@@ -10,9 +10,9 @@ _AlonaBot 插件模板_
 
 这是 [AlonaBot](https://github.com/AlonaBot/AlonaBot) 的插件模板，包含：
 
-- 一个可以直接运行的示例插件：`hello` 命令读取配置的问候语，`roll` 命令（别名 `dice`）带一个可选参数。
+- 一个可以直接运行、按功能分模块的示例插件：`greet` 模块的 `hello` 命令读取配置的问候语，`dice` 模块的 `roll` 命令（别名 `dice`）带一个可选参数。
 - 配置声明 `config_schema.json`、中英文案 `i18n/`、插件身份 `plugin.yaml`。
-- 用 `plugintest` 写的集成测试。
+- 用 `plugintest` 写的集成测试，以及不依赖 SDK 的业务逻辑单元测试。
 - 检查与测试的 CI，以及推送版本标签后自动打包五个平台、发布 GitHub Release 的工作流。
 - `CHANGELOG.md`：发布说明取自这里，安装后 WebUI 也会显示。
 
@@ -24,7 +24,29 @@ _AlonaBot 插件模板_
    - `plugin.yaml` 的 `id`（市场 ID 以 `alonabot_plugin_` 开头）、`name`、`description`、`author`，以及 `source`（`github.com/<你的账号>/<仓库名>`，发布时必须与仓库一致）；
    - `i18n/*.json` 的 `metadata`；
    - `LICENSE` 中的版权人。
-3. 运行 `go mod tidy`，把 `plugin.go` 换成你的命令。
+3. 把 `plugin.go` 与 `internal/*` 中的 import 路径改成新的 module，运行 `go mod tidy`。
+4. 照「项目结构」删改示例模块，加入你自己的功能。
+
+## 项目结构
+
+```text
+plugin.go                 入口：New 只组装各功能模块
+internal/greet/greet.go   一个功能一个包：子插件、命令与配置
+internal/dice/dice.go     业务逻辑（Roll）与命令登记（Register）分开
+internal/dice/dice_test.go  业务逻辑的单元测试，不启动 Core
+plugin_test.go            plugintest 集成测试，走一遍各模块的命令
+config_schema.json        每个模块一个同名 object：greet、dice
+i18n/                     文案键按模块加前缀：greet.*、dice.*
+```
+
+每个功能模块：
+
+- 在 `internal/` 下建一个包，导出 `Register(p *sdk.Plugin)`，在其中用 `p.Sub(ID)` 创建子插件并登记命令；子插件可以统一设置缺省权限（示例为 `sdk.User`）。
+- 配置写成 `config_schema.json` 中与子插件 ID 同名的 `object`，用 `s.Config()` 读取本模块的配置，模块之间互不读取对方的配置。
+- 不依赖 SDK 的业务逻辑写成普通函数，用 Go 的单元测试覆盖；命令的整条路径由 `plugin_test.go` 用 `plugintest` 覆盖。
+- 在 `plugin.go` 的 `New` 中调用它的 `Register`。
+
+新增模块时照 `internal/greet` 复制一份，改 `ID`、命令、配置与文案，再在 `New` 中登记。
 
 ## 安装
 
@@ -40,8 +62,8 @@ alonabot install --source <你的账号>/<仓库名>
 
 | 配置项 | 类型 | 缺省值 | 说明 |
 | --- | --- | --- | --- |
-| `greeting` | string | `Hello` | 名字前的问候语 |
-| `dice_sides` | int | `6` | 掷骰的默认面数，2～100 |
+| `greet.greeting` | string | `Hello` | 名字前的问候语 |
+| `dice.default_sides` | int | `6` | 掷骰的默认面数，2～100 |
 
 配置在 WebUI 的插件详情页修改，保存后插件重载生效。
 
@@ -50,7 +72,7 @@ alonabot install --source <你的账号>/<仓库名>
 | 命令 | 参数 | 说明 |
 | --- | --- | --- |
 | `hello` | `[名字]` | 用问候语问候，省略名字时问候所有人 |
-| `roll`、`dice` | `[面数]` | 掷一个骰子，省略面数时用 `dice_sides` |
+| `roll`、`dice` | `[面数]` | 掷一个骰子，省略面数时用 `dice.default_sides` |
 
 命令前缀由 AlonaBot 设置，缺省为 `/`，例如 `/hello 阿洛娜`。
 
