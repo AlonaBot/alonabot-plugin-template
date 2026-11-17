@@ -6,7 +6,7 @@ import (
 	"github.com/AlonaBot/AlonaBot/plugintest"
 )
 
-// TestCommands 用真实 Core 与测试 Adapter 走一遍各模块的命令。
+// TestCommands 用真实 Core 与测试 Adapter 走一遍全部命令。
 func TestCommands(t *testing.T) {
 	p := New()
 	h := plugintest.Start(t, plugintest.Plugin(p),

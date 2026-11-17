@@ -1,20 +1,21 @@
-// Package plugin 是 AlonaBot 插件模板的入口：New 只负责把各功能模块组装到同一个插件上。
+// Package plugin 是 AlonaBot 插件模板的入口。
 //
-// 每个功能放在 internal/ 下自己的包里，用子插件登记命令，配置是 config_schema.json 中与子插件 ID 同名的 object。
-// 新增功能时照 internal/greet 新建一个包，在这里调用它的 Register。
+// 全部命令都在 New 中集中注册，一眼就能看到插件提供了什么；处理函数放在 handler/ 中按功能分文件，
+// 不依赖 SDK 的业务逻辑放在 internal/ 中。新增命令时在 handler/ 写处理函数，再在这里加一行注册。
 package plugin
 
 import (
-	"github.com/AlonaBot/alonabot-plugin-template/internal/dice"
-	"github.com/AlonaBot/alonabot-plugin-template/internal/greet"
-
 	"github.com/AlonaBot/AlonaBot/sdk"
+
+	"github.com/AlonaBot/alonabot-plugin-template/handler"
 )
 
-// New 创建插件并登记各模块。每次调用返回独立的插件对象。
+// New 创建插件并注册全部命令。每次调用返回独立的插件对象。
 func New() *sdk.Plugin {
 	p := sdk.NewPlugin()
-	greet.Register(p)
-	dice.Register(p)
+
+	p.Command("hello").Description("Greet someone").Handle(handler.Hello)
+	p.Command("roll").Alias("dice").Description("Roll a die").Handle(handler.Roll)
+
 	return p
 }

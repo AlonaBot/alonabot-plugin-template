@@ -8,5 +8,5 @@
 
 ### Added
 
-- `greet` 模块的 `hello` 命令：用配置的问候语问候，省略名字时问候所有人。
-- `dice` 模块的 `roll` 命令（别名 `dice`）：掷骰子，面数缺省取配置的 `dice.default_sides`。
+- `hello` 命令：用配置的问候语问候，省略名字时问候所有人。
+- `roll` 命令（别名 `dice`）：掷骰子，面数缺省取配置的 `dice.default_sides`。
