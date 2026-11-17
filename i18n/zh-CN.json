@@ -1,0 +1,16 @@
+{
+  "metadata": {
+    "name": "示例插件",
+    "description": "AlonaBot 插件的起点"
+  },
+  "config": {
+    "greeting": {"description": "名字前的问候语"},
+    "dice_sides": {"description": "掷骰的默认面数"}
+  },
+  "messages": {
+    "hello.reply": "{greeting}，{name}！",
+    "hello.everyone": "大家",
+    "roll.reply": "掷出了 {value}（1～{sides}）。",
+    "roll.invalid": "面数要在 2 到 100 之间。"
+  }
+}

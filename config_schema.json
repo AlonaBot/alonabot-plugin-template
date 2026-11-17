@@ -1,0 +1,13 @@
+{
+  "greeting": {
+    "type": "string",
+    "description": "Greeting before the name",
+    "default": "Hello"
+  },
+  "dice_sides": {
+    "type": "int",
+    "description": "Default number of sides for roll",
+    "default": 6,
+    "slider": {"min": 2, "max": 100}
+  }
+}
