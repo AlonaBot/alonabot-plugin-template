@@ -17,13 +17,12 @@ _AlonaBot 插件简单描述_
 <summary>模板库使用方法</summary>
 
 1. 点击 [使用此模板](https://github.com/new?template_owner=AlonaBot&template_name=alonabot-plugin-template) 创建仓库。
-2. 在新仓库中按下表全局替换占位名称。仓库所有者、仓库名和插件 ID 分别填写，插件 ID 只使用小写字母、数字与下划线。
+2. 在新仓库中按下表全局替换占位名称。填写仓库所有者、仓库名与插件 ID，插件 ID 只使用小写字母、数字与连字符。
 
    | 占位内容 | 替换为 | 示例 |
    | --- | --- | --- |
    | `owner` | 你的 GitHub 用户名或组织名 | `alice` |
-   | `alonabot-plugin-template` | 你的仓库名 | `alonabot-plugin-weather` |
-   | `alonabot_plugin_template` | 你的插件 ID，保留 `alonabot_plugin_` 前缀 | `alonabot_plugin_weather` |
+   | `alonabot-plugin-template` | 你的仓库名与插件 ID，保留 `alonabot-plugin-` 前缀 | `alonabot-plugin-weather` |
 
    替换后，`go.mod` 的 module、`plugin.yaml` 的 source、README 的徽章、安装与仓库链接应共同指向你的仓库。保留 SDK 的 `github.com/AlonaBot/AlonaBot` 路径与模板创建链接。
 3. 修改 `plugin.yaml` 的 `name`、`description`、`author`，以及本页标题、简介、配置和指令说明；Go 徽章版本与 `go.mod` 保持一致。
