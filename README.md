@@ -71,7 +71,8 @@ alonabot install --source owner/alonabot-plugin-template
 需要 Go（版本见 `go.mod`）与 AlonaBot CLI。CLI 的版本应与 `go.mod` 中的 SDK 一致：
 
 ```fish
-go install "github.com/AlonaBot/AlonaBot/cmd/alonabot@$(go list -m -f '{{.Version}}' github.com/AlonaBot/AlonaBot)"
+go mod download github.com/AlonaBot/AlonaBot
+go -C (go list -m -f '{{.Dir}}' github.com/AlonaBot/AlonaBot) install ./cmd/alonabot
 ```
 
 ### 项目结构
@@ -92,9 +93,9 @@ scripts/release.sh        多平台打包脚本
 
 ```sh
 alonabot run --reload .   # 启动 Core 并运行本插件，改动源码后自动重建
-alonabot check --dir .    # 检查插件声明与配置
+alonabot check .          # 检查插件声明与配置
 go test ./...            # 运行 plugintest 集成测试
-alonabot test --dir .     # 在临时离线会话中加载、注册并停止插件
+alonabot test .           # 在临时离线会话中加载、注册并停止插件
 ```
 
 `alonabot run` 的数据写在 `data/`，已被 `.gitignore` 忽略。
@@ -118,6 +119,6 @@ AlonaBot 仓库公开之前，CI 拉取 SDK 需要在 **Settings → Secrets and
    git push origin v0.2.0
    ```
 
-3. `Release` 工作流核对标签与 `version`、`source` 与仓库，为 linux/amd64、linux/arm64、darwin/amd64、darwin/arm64、windows/amd64 打包，合并为一份 `release.json`，并以 CHANGELOG 中该版本的内容创建 [GitHub Release](https://github.com/owner/alonabot-plugin-template/releases)。
+3. `Release` 工作流核对标签与 `version`、`source` 与仓库，为 linux/amd64、linux/arm64、darwin/amd64、darwin/arm64、windows/amd64 打包，一次生成共享的 `release.json`，并以 CHANGELOG 中该版本的内容创建 [GitHub Release](https://github.com/owner/alonabot-plugin-template/releases)。
 
-发布签名（`release.json.sig`）是可选的。当前 CLI 只能为单个平台的 `release.json` 签名，多平台合并后的签名等 CLI 支持后再加入工作流；没有签名时，安装界面会标明来源未签名。
+当前工作流发布未签名包，安装界面会标明来源未签名。CLI 的 `pack --key` 可为五个平台共享的 `release.json` 统一签名；签名密钥由发布者保管。

@@ -26,7 +26,9 @@ jobs:
         run: git config --global url."https://x-access-token:${ALONABOT_SDK_TOKEN}@github.com/AlonaBot/".insteadOf "https://github.com/AlonaBot/"
 
       - name: Install the AlonaBot CLI matching the SDK in go.mod
-        run: go install "github.com/AlonaBot/AlonaBot/cmd/alonabot@$(go list -m -f '{{.Version}}' github.com/AlonaBot/AlonaBot)"
+        run: |
+          go mod download github.com/AlonaBot/AlonaBot
+          go -C "$(go list -m -f '{{.Dir}}' github.com/AlonaBot/AlonaBot)" install ./cmd/alonabot
 
       - run: go test ./...
 
