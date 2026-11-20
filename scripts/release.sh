@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 为五个目标平台打包，合并 release.json，并从 CHANGELOG.md 取出本版本的说明。
+# 为五个目标平台生成归档和共享 release.json，从 CHANGELOG.md 取出本版本的说明。
 # 用法：scripts/release.sh v0.1.0 owner/repo
 # 输出：dist/ 下的归档、release.json 与 notes.md。
 set -euo pipefail
@@ -8,7 +8,6 @@ tag="$1"
 repo="$2"
 targets=(linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64)
 
-id="$(sed -n 's/^id: *//p' plugin.yaml)"
 version="$(sed -n 's/^version: *//p' plugin.yaml)"
 source="$(sed -n 's/^source: *//p' plugin.yaml)"
 
@@ -21,20 +20,12 @@ if [[ "$source" != "github.com/$repo" ]]; then
   exit 1
 fi
 
-rm -rf build dist
-mkdir -p dist
+rm -rf dist
+args=()
 for target in "${targets[@]}"; do
-  os="${target%/*}"
-  arch="${target#*/}"
-  name="$id-$version-$os-$arch.tar.gz"
-  alonabot pack --dir . --goos "$os" --goarch "$arch" --out "build/$os-$arch" \
-    --asset-url "https://github.com/$repo/releases/download/$tag/$name"
-  mv "build/$os-$arch/$name" dist/
+  args+=(--target "$target")
 done
-
-# 每次 pack 只写一个平台的 release.json，这里把各平台的 assets 合并成一份。
-jq -s '.[0] + {assets: (map(.assets) | add)}' build/*/release.json > dist/release.json
-rm -rf build
+alonabot pack . "${args[@]}" --asset-base "https://github.com/$repo/releases/download/$tag" --out dist
 
 # 取出 CHANGELOG.md 中「## [版本]」到下一个「## [」之间的内容作为发布说明。
 awk -v v="$version" '

@@ -1,5 +1,5 @@
-github.com/AlonaBot/AlonaBot v0.0.0-20261117023732-f925220da90b h1:zW8pYn9UevWp9pnWq4KBDqeB3rbSVLLTfKF8yUcltpU=
-github.com/AlonaBot/AlonaBot v0.0.0-20261117023732-f925220da90b/go.mod h1:+4u6UpvYgW/UUSfPJKvp10G31yJ0eRXzh2Ebhwd/JWs=
+github.com/AlonaBot/AlonaBot v0.0.0-20261120071651-46c35d0eebcb h1:IGdtHuRVpGooW7mFH/pSatkED9rYJMHAkW2D/K9qMaE=
+github.com/AlonaBot/AlonaBot v0.0.0-20261120071651-46c35d0eebcb/go.mod h1:zod3PAugRpWPZPE+A/k3JY3/1wT0VH/x88WM2QLNxWk=
 github.com/anthropics/anthropic-sdk-go/v2 v2.9.0 h1:kn8rCJlgcOTd5/yjofmTuUdfMRP14OL9vDS4tsdJqZg=
 github.com/anthropics/anthropic-sdk-go/v2 v2.9.0/go.mod h1:LAOInMKgn6reTIrPvKXa5weyqzxsJkxSBuzhnxzukpQ=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
