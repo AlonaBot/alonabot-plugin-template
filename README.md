@@ -107,8 +107,6 @@ alonabot test .           # 在临时离线会话中加载、注册并停止插�
 
 工作流会检查插件、运行测试，并在推送版本标签后打包发布。仓库的 **Settings → Actions → General** 中应启用 GitHub Actions。
 
-AlonaBot 仓库公开之前，CI 拉取 SDK 需要在 **Settings → Secrets and variables → Actions** 中设置 `ALONABOT_SDK_TOKEN`：一个能读取 `AlonaBot/AlonaBot` 的 fine-grained token（Contents 只读）。仓库公开后可以删除这个 secret。
-
 </details>
 
 1. 修改 `plugin.yaml` 的 `version`，在 `CHANGELOG.md` 中把 `[Unreleased]` 的内容移到新版本一节，例如 `## [0.2.0] - 2026-12-01`。

@@ -2,7 +2,7 @@ module github.com/owner/alonabot-plugin-template
 
 go 1.27.3
 
-require github.com/AlonaBot/AlonaBot v0.0.0-20261120071651-46c35d0eebcb
+require github.com/AlonaBot/AlonaBot v0.1.0
 
 require (
 	github.com/dustin/go-humanize v1.1.0 // indirect

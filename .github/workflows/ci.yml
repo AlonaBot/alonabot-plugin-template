@@ -11,20 +11,12 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
-    env:
-      GOPRIVATE: github.com/AlonaBot/*
-      ALONABOT_SDK_TOKEN: ${{ secrets.ALONABOT_SDK_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-
-      # AlonaBot 仓库公开前，拉取 SDK 需要一个能读取它的 token。
-      - name: Access the AlonaBot SDK
-        if: env.ALONABOT_SDK_TOKEN != ''
-        run: git config --global url."https://x-access-token:${ALONABOT_SDK_TOKEN}@github.com/AlonaBot/".insteadOf "https://github.com/AlonaBot/"
 
       - name: Install the AlonaBot CLI matching the SDK in go.mod
         run: |
