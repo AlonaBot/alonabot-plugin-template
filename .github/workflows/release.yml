@@ -1,3 +1,4 @@
+# 按版本标签构建模板生成后的组件，并提取 CHANGELOG 发布说明。
 name: Release
 
 on:
@@ -5,29 +6,33 @@ on:
     tags: ["v*"]
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
         with:
           go-version-file: go.mod
 
-      - name: Install the AlonaBot CLI matching the SDK in go.mod
+      - name: 使用组件工具链构建锁定 SDK 的 CLI
         run: |
           go mod download github.com/AlonaBot/AlonaBot
-          go -C "$(go list -m -f '{{.Dir}}' github.com/AlonaBot/AlonaBot)" install ./cmd/alonabot
+          env GOTOOLCHAIN="$(go env GOVERSION)" go -C "$(go list -m -f '{{.Dir}}' github.com/AlonaBot/AlonaBot)" install ./cmd/alonabot
 
       - run: go test ./...
 
-      - name: Pack all platforms
+      - name: 构建五平台包
         run: scripts/release.sh "$GITHUB_REF_NAME" "$GITHUB_REPOSITORY"
 
-      - name: Publish the GitHub Release
+      - name: 发布 GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
