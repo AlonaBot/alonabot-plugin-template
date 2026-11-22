@@ -9,7 +9,7 @@ import (
 // New 创建插件并注册全部命令。每次调用返回独立的插件对象。
 func New() *sdk.Plugin {
 	p := sdk.NewPlugin()
-	p.Command("hello").Description("Greet someone").Handle(Hello)
+	p.Command("hello").Description("Greet someone").Menu().Handle(Hello)
 	return p
 }
 

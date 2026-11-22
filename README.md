@@ -68,11 +68,11 @@ alonabot install --source owner/alonabot-plugin-template
 
 ## 开发
 
-需要 Go（版本见 `go.mod`）与 AlonaBot CLI。CLI 的版本应与 `go.mod` 中的 SDK 一致：
+需要 Go（版本见 `go.mod`）与 AlonaBot Core v0.2.0。CLI 的版本应与 `go.mod` 中的 SDK 一致，构建 CLI 时沿用当前组件的 Go 工具链：
 
 ```fish
 go mod download github.com/AlonaBot/AlonaBot
-go -C (go list -m -f '{{.Dir}}' github.com/AlonaBot/AlonaBot) install ./cmd/alonabot
+env GOTOOLCHAIN=(go env GOVERSION) go -C (go list -m -f '{{.Dir}}' github.com/AlonaBot/AlonaBot) install ./cmd/alonabot
 ```
 
 ### 项目结构
@@ -87,7 +87,7 @@ scripts/release.sh        多平台打包脚本
 .github/workflows/        检查与发布工作流
 ```
 
-在 `plugin.go` 的 `New` 中调用 `p.Command("名字").Description(...).Handle(处理函数)` 注册命令。处理函数签名为 `func(c *sdk.Context, args 参数结构体) (message.Content, error)`，返回内容由 Core 作为回复发送；参数字段按顺序对应命令参数，指针字段为可选参数。
+在 `plugin.go` 的 `New` 中调用 `p.Command("名字").Description(...).Menu().Handle(处理函数)` 注册命令，`.Menu()` 将命令加入自动菜单。处理函数签名为 `func(c *sdk.Context, args 参数结构体) (message.Content, error)`，返回内容由 Core 作为回复发送；参数字段按顺序对应命令参数，指针字段为可选参数。
 
 配置通过 `c.Config()` 读取，例如 `c.Config().Object("greet").String("greeting")`。新增命令时，同步修改配置声明与 `plugin_test.go`。
 
