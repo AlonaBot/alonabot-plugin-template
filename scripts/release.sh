@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# 为五个目标平台生成归档和共享 release.json，从 CHANGELOG.md 取出本版本的说明。
+# 为五个目标平台生成组件归档，从 CHANGELOG.md 取出本版本的说明。
 # 用法：scripts/release.sh v0.1.0 owner/repo
-# 输出：dist/ 下的归档、release.json 与 notes.md。
+# 输出：dist/ 下的归档与 notes.md。
 set -euo pipefail
 
 tag="$1"
@@ -25,7 +25,7 @@ args=()
 for target in "${targets[@]}"; do
   args+=(--target "$target")
 done
-alonabot pack . "${args[@]}" --asset-base "https://github.com/$repo/releases/download/$tag" --out dist
+alonabot pack . "${args[@]}" --out dist
 
 # 取出 CHANGELOG.md 中「## [版本]」到下一个「## [」之间的内容作为发布说明。
 awk -v v="$version" '

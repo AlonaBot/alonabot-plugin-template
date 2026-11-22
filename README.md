@@ -117,6 +117,6 @@ alonabot test .           # 在临时离线会话中加载、注册并停止插�
    git push origin v0.2.0
    ```
 
-3. `Release` 工作流核对标签与 `version`、`source` 与仓库，为 linux/amd64、linux/arm64、darwin/amd64、darwin/arm64、windows/amd64 打包，一次生成共享的 `release.json`，并以 CHANGELOG 中该版本的内容创建 [GitHub Release](https://github.com/owner/alonabot-plugin-template/releases)。
+3. `Release` 工作流核对标签与 `version`、`source` 与仓库，为 linux/amd64、linux/arm64、darwin/amd64、darwin/arm64、windows/amd64 打包，只上传平台压缩包，并以 CHANGELOG 中该版本的内容创建 [GitHub Release](https://github.com/owner/alonabot-plugin-template/releases)。
 
-当前工作流发布未签名包，安装界面会标明来源未签名。CLI 的 `pack --key` 可为五个平台共享的 `release.json` 统一签名；签名密钥由发布者保管。
+Release 仅包含平台压缩包和 GitHub 提供的源码下载；安装与更新读取包内 `plugin.yaml`，并绑定组件仓库来源。
