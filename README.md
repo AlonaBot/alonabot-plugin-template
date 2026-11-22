@@ -30,7 +30,7 @@ _AlonaBot 插件简单描述_
 5. 处理函数直接写在 `plugin.go`，在 `New` 中注册命令。回复直接构造文本，配置说明写在 `config_schema.json`。
 6. 运行 `go mod tidy` 和下方开发命令，更新 `CHANGELOG.md`，然后删去这段模板使用说明。
 
-模板采用 [MIT 许可证](LICENSE)；创建插件后，在 `LICENSE` 中补充你的版权声明。
+需要开源许可证时，在新仓库通过 **Add file → Create new file → LICENSE → Choose a license template** 自行选择。
 
 </details>
 
@@ -120,7 +120,3 @@ alonabot test .           # 在临时离线会话中加载、注册并停止插�
 3. `Release` 工作流核对标签与 `version`、`source` 与仓库，为 linux/amd64、linux/arm64、darwin/amd64、darwin/arm64、windows/amd64 打包，一次生成共享的 `release.json`，并以 CHANGELOG 中该版本的内容创建 [GitHub Release](https://github.com/owner/alonabot-plugin-template/releases)。
 
 当前工作流发布未签名包，安装界面会标明来源未签名。CLI 的 `pack --key` 可为五个平台共享的 `release.json` 统一签名；签名密钥由发布者保管。
-
-## 许可证
-
-采用 [MIT 许可证](LICENSE)。
