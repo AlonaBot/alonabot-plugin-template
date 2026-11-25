@@ -14,13 +14,13 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
-      - name: 同步路径标签
+      - name: Sync path labels
         uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9
         with:
           configuration-path: .github/labeler.yml
           repo-token: ${{ github.token }}
           sync-labels: true
-      - name: 指派维护者
+      - name: Assign maintainer
         env:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}

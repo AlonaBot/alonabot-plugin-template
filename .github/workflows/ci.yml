@@ -25,7 +25,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - name: 检查 main 文件范围
+      - name: Check main branch file scope
         if: github.ref == 'refs/heads/main' || github.base_ref == 'main'
         shell: bash
         run: |
@@ -41,7 +41,7 @@ jobs:
             esac
           done < "$RUNNER_TEMP/main-paths"
           exit "$rejected"
-      - name: 检查提交空白并选择检查范围
+      - name: Check whitespace and select checks
         id: changed-files
         env:
           EVENT_NAME: ${{ github.event_name }}
@@ -91,7 +91,11 @@ jobs:
         with:
           go-version-file: go.mod
           cache: false
-      - name: 检查 Go 格式
+      - name: Update SDK to latest
+        if: needs.repository.outputs.has_go == 'true' || needs.repository.outputs.has_component == 'true'
+        run: go get github.com/AlonaBot/AlonaBot@latest
+
+      - name: Check Go formatting
         if: needs.repository.outputs.has_go == 'true'
         shell: bash
         run: |
@@ -101,15 +105,15 @@ jobs:
             printf '%s\n' "$unformatted"
             exit 1
           fi
-      - name: 静态检查
+      - name: Run static analysis
         if: needs.repository.outputs.has_go == 'true'
         run: go vet ./...
-      - name: 测试并检查数据竞争
+      - name: Run tests with race detection
         if: needs.repository.outputs.has_go == 'true'
         env:
           CGO_ENABLED: '1'
         run: go test -race ./...
-      - name: 五目标平台 pure-Go 构建
+      - name: Build pure Go for five platforms
         if: needs.repository.outputs.has_go == 'true'
         shell: bash
         run: |
@@ -118,16 +122,16 @@ jobs:
             echo "构建 $target"
             GOOS=${target%/*} GOARCH=${target#*/} CGO_ENABLED=0 go build ./...
           done
-      - name: 使用组件工具链构建锁定 SDK 的 CLI
+      - name: Build matching SDK CLI with component toolchain
         if: needs.repository.outputs.has_component == 'true'
         shell: bash
         run: |
           set -euo pipefail
           go mod download github.com/AlonaBot/AlonaBot
           env GOTOOLCHAIN="$(go env GOVERSION)" go -C "$(go list -m -f '{{.Dir}}' github.com/AlonaBot/AlonaBot)" install ./cmd/alonabot
-      - name: 检查组件
+      - name: Check component
         if: needs.repository.outputs.has_component == 'true'
         run: alonabot check .
-      - name: 离线加载插件
+      - name: Load plugin offline
         if: needs.repository.outputs.has_component == 'true'
         run: alonabot test .

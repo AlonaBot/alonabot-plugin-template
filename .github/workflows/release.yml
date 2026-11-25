@@ -22,17 +22,20 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: 使用组件工具链构建锁定 SDK 的 CLI
+      - name: Update SDK to latest
+        run: go get github.com/AlonaBot/AlonaBot@latest
+
+      - name: Build matching SDK CLI with component toolchain
         run: |
           go mod download github.com/AlonaBot/AlonaBot
           env GOTOOLCHAIN="$(go env GOVERSION)" go -C "$(go list -m -f '{{.Dir}}' github.com/AlonaBot/AlonaBot)" install ./cmd/alonabot
 
       - run: go test ./...
 
-      - name: 构建五平台包
+      - name: Package five platforms
         run: scripts/release.sh "$GITHUB_REF_NAME" "$GITHUB_REPOSITORY"
 
-      - name: 发布 GitHub Release
+      - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: >-
