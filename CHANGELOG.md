@@ -1,14 +1,13 @@
 # Changelog
 
-本文件的格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。发布时 `scripts/release.sh` 取出对应版本的一节作为 Release 说明，安装后 WebUI 也会显示它。
+本文件的格式遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/)，版本号遵循[语义化版本](https://semver.org/lang/zh-CN/)。发布时 `scripts/release.sh` 取出对应版本的一节作为 Release 说明，安装后 WebUI 也会显示它。条目说明开发者能看到的变化，PR 编号链接用括号放在句末标点前。
 
 ## [Unreleased]
 
 ### Changed
 
-- SDK 与 CLI 固定使用正式版本 `v0.2.0`，工作流直接获取公开 SDK。
-- `hello` 命令通过 `.Menu()` 加入自动菜单，开发示例同步菜单声明方式。
-- 源码安装 CLI 时沿用组件的 Go 工具链，使声明扫描器与组件导出数据匹配。
+- `hello` 命令会显示在自动命令菜单中；模板演示了如何用 `.Menu()` 声明菜单项。
+- 模板使用公开的 AlonaBot v0.2.0 SDK 和 CLI，开发者可以直接用正式版本构建和打包。
 
 ## [0.1.0] - 2026-11-17
 
