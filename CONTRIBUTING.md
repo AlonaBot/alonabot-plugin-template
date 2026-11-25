@@ -6,7 +6,7 @@ Contributions to features, bug fixes, tests, and documentation are welcome. See 
 
 ## Change the plugin
 
-Commands are registered in `New` in `plugin.go`. When adding or changing a feature, update configuration declarations in `config_schema.json` and add corresponding tests in `plugin_test.go`. Update the README when usage changes.
+Commands are registered in `New` in `plugin.go`. When adding or changing a feature, update configuration declarations in `plugin_config_schema.json` and add corresponding tests in `plugin_test.go`. Update the README when usage changes.
 
 For bug reports, include the plugin and SDK versions, operating system, reproduction steps, and relevant logs. Remove credentials and private data. Discuss larger features in an Issue with a proposed design and use cases.
 

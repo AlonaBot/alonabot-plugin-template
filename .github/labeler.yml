@@ -10,4 +10,4 @@
       - any-glob-to-any-file: [".github/**", "scripts/**"]
 "area: plugin":
   - changed-files:
-      - any-glob-to-any-file: ["plugin.go", "plugin.yaml", "config_schema.json", "go.mod", "go.sum"]
+      - any-glob-to-any-file: ["plugin.go", "plugin.yaml", "plugin_config_schema.json", "go.mod", "go.sum"]

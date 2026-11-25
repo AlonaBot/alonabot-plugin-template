@@ -6,7 +6,7 @@
 
 ## 修改插件
 
-命令在 `plugin.go` 的 `New` 中注册。新增或修改功能时，同步调整配置声明 `config_schema.json`，并在 `plugin_test.go` 中补充对应测试。涉及使用方式变化时，更新 README。
+命令在 `plugin.go` 的 `New` 中注册。新增或修改功能时，同步调整配置声明 `plugin_config_schema.json`，并在 `plugin_test.go` 中补充对应测试。涉及使用方式变化时，更新 README。
 
 报告问题请附上插件与 SDK 版本、操作系统、复现步骤及相关日志，并移除凭据和私人数据。较大的功能建议先通过 Issue 讨论设计与使用场景。
 
