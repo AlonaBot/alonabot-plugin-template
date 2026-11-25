@@ -9,8 +9,7 @@ import (
 // TestCommands 用真实 Core 与测试 Adapter 走一遍全部命令。
 func TestCommands(t *testing.T) {
 	p := New()
-	h := plugintest.Start(t, plugintest.Plugin(p),
-		plugintest.Config(p, `{"greet":{"greeting":"Hi"}}`))
+	h := plugintest.Start(t, plugintest.Plugin(p))
 	user := plugintest.User{ID: "alice"}
 	chat := plugintest.Private(user.ID)
 
@@ -23,10 +22,7 @@ func TestCommands(t *testing.T) {
 		return result.Sends[0].Text()
 	}
 
-	if got := reply("/hello Alona"); got != "Hi, Alona!" {
-		t.Errorf("/hello Alona = %q", got)
-	}
-	if got := reply("/hello"); got != "Hi, everyone!" {
+	if got := reply("/hello"); got != "Hello AlonaBot" {
 		t.Errorf("/hello = %q", got)
 	}
 }

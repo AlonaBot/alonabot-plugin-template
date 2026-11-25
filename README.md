@@ -2,7 +2,7 @@
 
 [简体中文](README.zh-CN.md)
 
-A project template for developing AlonaBot plugins. It demonstrates command registration, optional arguments, configuration access, plugintest integration tests, and five-platform packaging with GitHub Releases.
+A project template for developing AlonaBot plugins. It demonstrates the same hello example as `alonabot init`, plugintest integration tests, and five-platform packaging with GitHub Releases.
 
 ## Create a plugin project
 
@@ -31,8 +31,8 @@ go install github.com/AlonaBot/AlonaBot/cmd/alonabot@latest
 
 ## Write commands
 
-- `plugin.go`: `New` creates the plugin and registers commands; `Hello` demonstrates a handler.
-- `config_schema.json`: configuration fields, types, and defaults.
+- `plugin.go`: `New` creates the plugin and registers the hello command.
+- `plugin_config_schema.json`: configuration declarations, initially empty.
 - `plugin_test.go`: command reply tests using a real Core and test Adapter.
 - `plugin.yaml`: plugin identity, version, and source.
 - `scripts/release.sh`: version and source checks, followed by five-platform packaging.
@@ -40,10 +40,12 @@ go install github.com/AlonaBot/AlonaBot/cmd/alonabot@latest
 The `hello` command is registered with:
 
 ```go
-p.Command("hello").Description("Greet someone").Menu().Handle(Hello)
+p.Command("hello").Menu().Description("Show a greeting").Handle(func(c *sdk.Context) error {
+    return c.Reply("Hello AlonaBot")
+})
 ```
 
-`Hello` accepts `*sdk.Context` and an argument struct, returning `message.Content` and `error`. Struct fields map to command arguments in order; pointer fields are optional. `.Menu()` adds the command to automatic menus. The handler reads configuration with `c.Config().Object("greet").String("greeting")`.
+The handler replies with `c.Reply("Hello AlonaBot")`; `.Menu()` adds the command to automatic menus.
 
 To add a command, register its handler in `New`, add configuration declarations as needed, and verify replies and failure paths in `plugin_test.go`. Split implementation files by feature as the plugin grows.
 
@@ -53,7 +55,7 @@ To add a command, register its handler in `New`, add configuration declarations 
 alonabot run --reload .
 ```
 
-This starts Core with the plugin and rebuilds it when source files change. Runtime data is stored in the ignored `data/` directory. Send `/hello Alona` on a connected chat platform to try the example; the command prefix follows Core configuration.
+This starts Core with the plugin and rebuilds it when source files change. Runtime data is stored in the ignored `data/` directory. Send `/hello` on a connected chat platform to try the example; the command prefix follows Core configuration.
 
 Before submitting, select checks for the affected behavior using the [contribution guide](CONTRIBUTING.md#verify-changes). `go test` runs integration tests, `alonabot check .` validates component declarations, and `alonabot test .` checks offline loading and registration.
 

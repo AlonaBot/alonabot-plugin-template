@@ -2,7 +2,7 @@
 
 [English](README.md)
 
-用于开发 AlonaBot 插件的项目模板。提供命令注册、可选参数、配置读取、plugintest 集成测试，以及五平台打包与 GitHub Release 工作流。
+用于开发 AlonaBot 插件的项目模板。提供与 `alonabot init` 一致的 hello 示例、plugintest 集成测试，以及五平台打包与 GitHub Release 工作流。
 
 ## 创建插件项目
 
@@ -31,8 +31,8 @@ go install github.com/AlonaBot/AlonaBot/cmd/alonabot@latest
 
 ## 编写命令
 
-- `plugin.go`：`New` 创建插件并集中注册命令，`Hello` 演示处理函数。
-- `config_schema.json`：声明配置字段、类型与默认值。
+- `plugin.go`：`New` 创建插件并注册 hello 命令。
+- `plugin_config_schema.json`：配置声明，初始为空。
 - `plugin_test.go`：通过真实 Core 和测试 Adapter 验证命令回复。
 - `plugin.yaml`：声明插件身份、版本与来源。
 - `scripts/release.sh`：核对版本与来源并打包五个平台。
@@ -40,10 +40,12 @@ go install github.com/AlonaBot/AlonaBot/cmd/alonabot@latest
 以 `hello` 为例：
 
 ```go
-p.Command("hello").Description("Greet someone").Menu().Handle(Hello)
+p.Command("hello").Menu().Description("Show a greeting").Handle(func(c *sdk.Context) error {
+    return c.Reply("Hello AlonaBot")
+})
 ```
 
-`Hello` 接收 `*sdk.Context` 和参数结构体，返回 `message.Content` 与 `error`。参数按结构体字段顺序匹配，指针字段表示可选参数；`.Menu()` 将命令加入自动菜单。处理函数通过 `c.Config().Object("greet").String("greeting")` 读取配置。
+处理函数通过 `c.Reply("Hello AlonaBot")` 回复；`.Menu()` 将命令加入自动菜单。
 
 新增命令时，在 `New` 中注册处理函数，按需补充配置声明，并在 `plugin_test.go` 中验证回复与失败路径。实现增多后可按功能拆分文件。
 
@@ -53,7 +55,7 @@ p.Command("hello").Description("Greet someone").Menu().Handle(Hello)
 alonabot run --reload .
 ```
 
-该命令启动 Core 与插件，源码变化后自动重建。运行数据写入已忽略的 `data/`。在接入的聊天平台发送 `/hello Alona` 可体验示例；命令前缀以 Core 配置为准。
+该命令启动 Core 与插件，源码变化后自动重建。运行数据写入已忽略的 `data/`。在接入的聊天平台发送 `/hello` 可体验示例；命令前缀以 Core 配置为准。
 
 提交前按改动范围运行检查，具体命令见[贡献指南](CONTRIBUTING.zh-CN.md#验证改动)。`go test` 执行集成测试；`alonabot check .` 校验组件声明，`alonabot test .` 验证离线加载与注册。
 
