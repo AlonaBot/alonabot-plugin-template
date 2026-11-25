@@ -14,7 +14,7 @@ jobs:
     if: github.event.pull_request.state == 'open' && github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
-      - name: 检查模板段落和确认项
+      - name: Check PR sections and checklist
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
           PR_BODY: ${{ github.event.pull_request.body }}

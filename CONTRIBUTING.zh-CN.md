@@ -1,19 +1,30 @@
-# 参与贡献
+# 参与插件开发
 
 [English](CONTRIBUTING.md)
 
-遵循现行 [Core 贡献流程与编码规范](https://github.com/AlonaBot/AlonaBot/blob/main/CONTRIBUTING.zh-CN.md)。本组件变更提交到本仓；较大改动先在 Issue 确认方向，新增依赖先取得维护者明确批准。
+欢迎提交功能、问题修复、测试与文档改进。开发环境和本地调试见 [README](README.zh-CN.md#准备-sdk-与-cli)。
 
-代码注释、内部维护说明与 commit message 使用简体中文；日志、错误、标识符和 CLI 输出使用英文。公开使用与开发指南提供中英版本。PR 标题采用 `type/scope: 中文摘要`；[PR 模板](.github/PULL_REQUEST_TEMPLATE.md)接受中英文正文和确认项，记录实际验证与风险。
+## 修改插件
 
-命名、边界校验、错误、兼容性和测试提交范围同样遵循 Core。提交覆盖真实入口的集成测试，临时单元与 SDK 边界检查留本地；PR 写明新增测试行数与本地结果。分享资料先移除凭据和真实用户数据；漏洞走[私密安全报告](https://github.com/AlonaBot/AlonaBot/security/advisories/new)，使用求助走[讨论区](https://github.com/AlonaBot/AlonaBot/discussions)。
+命令在 `plugin.go` 的 `New` 中注册。新增或修改功能时，同步调整配置声明 `config_schema.json`，并在 `plugin_test.go` 中补充对应测试。涉及使用方式变化时，更新 README。
 
-## 本仓差异
+报告问题请附上插件与 SDK 版本、操作系统、复现步骤及相关日志，并移除凭据和私人数据。较大的功能建议先通过 Issue 讨论设计与使用场景。
 
-公开入口和示例处理函数位于 `plugin.go`。保留公共导入路径，生成资源先改生成源再重新生成。
+## 验证改动
 
-具体工具链、生成器、前端和组件命令见[开发指南](docs/development.zh-CN.md)。CI 始终检查实际提交范围空白，再按路径选择 Go、前端与组件检查。
+按改动范围运行：
 
-涉及跨组件行为时，与 Core 维护者协调组件锁文件与整合验证。[打包与发布](docs/releasing.zh-CN.md)说明维护者流程。
+```bash
+go vet ./...
+go test -race ./...
+alonabot check .
+alonabot test .
+```
 
-在[模板替换](docs/template-setup.zh-CN.md)时选择并记录生成后仓库的许可证。
+提交前使用 `gofmt` 格式化修改的 Go 文件。`go test` 验证命令行为，`alonabot check .` 校验组件声明，`alonabot test .` 检查离线加载与注册。涉及打包时，按 [README](README.zh-CN.md#打包与发布) 构建目标平台的包。
+
+## 提交 PR
+
+填写 [PR 模板](.github/PULL_REQUEST_TEMPLATE.md)，说明改动内容、原因、验证结果，以及对现有命令、配置或数据的影响。关联相关 Issue；有未运行的检查时写明原因。
+
+发布前将 `CHANGELOG.md` 中的示例替换为实际英文变更说明，并更新 `plugin.yaml` 的版本，具体流程见 [README](README.zh-CN.md#打包与发布)。

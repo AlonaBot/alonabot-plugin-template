@@ -1,1 +1,1 @@
-请先阅读并遵循 [AGENTS.md](AGENTS.md)。
+@AGENTS.md

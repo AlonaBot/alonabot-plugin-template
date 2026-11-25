@@ -1,19 +1,30 @@
-# Contributing
+# Contribute to the plugin
 
 [简体中文](CONTRIBUTING.zh-CN.md)
 
-Follow the current [Core contribution process and coding rules](https://github.com/AlonaBot/AlonaBot/blob/main/CONTRIBUTING.md). Submit changes to this component here; larger changes need maintainer agreement on an Issue, and new dependencies need explicit approval.
+Contributions to features, bug fixes, tests, and documentation are welcome. See the [README](README.md#set-up-the-sdk-and-cli) for development setup and local debugging.
 
-Use Simplified Chinese for code comments, internal maintenance notes, and commit messages; keep logs, errors, identifiers, and CLI output in English. Provide public usage and developer guides in English and Simplified Chinese. PR titles follow `type/scope: 中文摘要`; complete the [PR template](.github/PULL_REQUEST_TEMPLATE.md) in English or Chinese with actual verification and risks.
+## Change the plugin
 
-The Core rules also govern naming, boundary validation, errors, compatibility, and test submission. Commit integration tests for real entry points; keep temporary unit and SDK boundary checks local. State added test lines and local results in the PR. Redact credentials and real user data; use the [private security channel](https://github.com/AlonaBot/AlonaBot/security/advisories/new) for vulnerabilities and [Discussions](https://github.com/AlonaBot/AlonaBot/discussions) for usage questions.
+Commands are registered in `New` in `plugin.go`. When adding or changing a feature, update configuration declarations in `config_schema.json` and add corresponding tests in `plugin_test.go`. Update the README when usage changes.
 
-## Component differences
+For bug reports, include the plugin and SDK versions, operating system, reproduction steps, and relevant logs. Remove credentials and private data. Discuss larger features in an Issue with a proposed design and use cases.
 
-The public entry and example handlers live in `plugin.go`. Preserve public import paths and update the generator source before regenerating resources.
+## Verify changes
 
-See [development](docs/development.md) for the exact toolchain, generator, frontend, and component commands. CI always checks the commit range for whitespace, then selects Go, frontend, and component checks from changed paths.
+Run checks relevant to your change:
 
-Coordinate cross-component behavior changes with the Core maintainers for the component lock and integration checks. [Packaging and releases](docs/releasing.md) describes the maintainer workflow.
+```bash
+go vet ./...
+go test -race ./...
+alonabot check .
+alonabot test .
+```
 
-Choose and document the generated repository license during [template setup](docs/template-setup.md).
+Format changed Go files with `gofmt` before submitting. `go test` verifies command behavior, `alonabot check .` validates component declarations, and `alonabot test .` checks offline loading and registration. For packaging changes, build a package for the target platform using the [README](README.md#package-and-release).
+
+## Submit a PR
+
+Complete the [PR template](.github/PULL_REQUEST_TEMPLATE.md) with what changed, why, verification results, and the impact on existing commands, configuration, or data. Link related Issues and explain any checks not run.
+
+Before releasing, replace the examples in `CHANGELOG.md` with actual English change descriptions and update the version in `plugin.yaml`. See the [README](README.md#package-and-release) for the release process.
