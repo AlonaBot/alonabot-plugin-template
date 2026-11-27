@@ -34,7 +34,7 @@ jobs:
           rejected=0
           while IFS= read -r -d '' path; do
             case "$path" in
-              .agents/*|.claude/*|.codex/*|.serena/*|.playwright-cli/*|docs/goals/*|docs/execution-order.md|docs/benchmarks.md|spec/*|goal-[0-9]*/*|delegation-skills-workspace/*|experiments/*)
+              .agents/*|.claude/*|.codex/*|.serena/*|.playwright-cli/*|docs/goals/*|docs/execution-order.md|docs/benchmarks.md|spec/*|docs/specs/*|docs/adr/*|goal-[0-9]*/*|delegation-skills-workspace/*|experiments/*)
                 printf 'main 包含个人维护资料：%q\n' "$path"
                 rejected=1
                 ;;
